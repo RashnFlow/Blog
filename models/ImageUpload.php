@@ -8,14 +8,22 @@ use Yii;
 
 class ImageUpload extends \yii\base\Model
 {
-
     public $image;
+
+    public function rules()
+    {
+        return [
+            [['image'], 'required'],
+            [['image'], 'file', 'extensions' => 'png,jpg']
+        ];
+    }
 
     public function uploadImage(UploadedFile $file, $currentImage)
     {
         $this->image = $file;
 
-        unlink(Yii::getAlias('@webroot') . '/uploads/' . $currentImage);
+        if (file_exists(Yii::getAlias('@webroot') . '/uploads/' . $currentImage))
+            unlink(Yii::getAlias('@webroot') . '/uploads/' . $currentImage);
 
         $fileName = strtolower(md5(uniqid($file->baseName)) . '.' . $file->extension);
 
