@@ -22,14 +22,34 @@ class ImageUpload extends \yii\base\Model
     {
         $this->image = $file;
 
-        if (file_exists(Yii::getAlias('@webroot') . '/uploads/' . $currentImage))
-            unlink(Yii::getAlias('@webroot') . '/uploads/' . $currentImage);
+        $this->deleteCurrentImage($currentImage);
 
-        $fileName = strtolower(md5(uniqid($file->baseName)) . '.' . $file->extension);
+        return $this->saveImage();
+    }
 
-        $file->saveAs(Yii::getAlias('@webroot') . '/uploads/' . $fileName);
+    public function saveImage()
+    {
+        $fileName = $this->generateFilename();
+
+        $this->image->saveAs($this->getFolder() . $fileName);
 
         return $fileName;
+    }
+
+    public function generateFilename()
+    {
+        return strtolower(md5(uniqid($this->image->baseName)) . '.' . $this->image->extension);
+    }
+
+    private function deleteCurrentImage($currentImage)
+    {
+        if (!empty($currentImage) && file_exists($this->getFolder() . $currentImage))
+            unlink($this->getFolder() . $currentImage);
+    }
+
+    public function getFolder()
+    {
+        return Yii::getAlias('@webroot') . '/uploads/';
     }
 
 }
