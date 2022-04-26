@@ -35,6 +35,7 @@ tests/_support/_generated
 /yii
 /web/.htaccess
 /web/index.php
+/web/uploads
 /web/index-test.php
 /config/db.php
 /config/params.php
