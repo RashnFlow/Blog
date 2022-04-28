@@ -6,6 +6,7 @@ use app\models\Article;
 use app\models\ArticleSearch;
 use app\models\Category;
 use app\models\ImageUpload;
+use app\models\Tag;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -168,6 +169,26 @@ class ArticleController extends Controller
             'article' => $article,
             'selectedCategory' => $selectedCategory,
             'categories' => $categories
+        ]);
+    }
+
+    public function actionSetTags($id)
+    {
+        $article = $this->findModel($id);
+        $selectedTags = $article->getSelectedTags();
+        $allTags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+
+        if(\Yii::$app->request->isPost) {
+            $tags = \Yii::$app->request->post('tags');
+            if($article->saveTags($tags))
+                return $this->redirect(['view', 'id' => $article->id]);
+
+        }
+
+        return $this->render('tags', [
+            'article' => $article,
+            'selectedTags' => $selectedTags,
+            'tags' => $allTags
         ]);
     }
 }
