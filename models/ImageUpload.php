@@ -41,10 +41,16 @@ class ImageUpload extends \yii\base\Model
         return strtolower(md5(uniqid($this->image->baseName)) . '.' . $this->image->extension);
     }
 
-    private function deleteCurrentImage($currentImage)
+    public function deleteCurrentImage($currentImage)
     {
-        if (!empty($currentImage) && file_exists($this->getFolder() . $currentImage))
+        if ($this->fileExists($currentImage))
             unlink($this->getFolder() . $currentImage);
+    }
+
+    public function fileExists($currentImage)
+    {
+        if(!empty($currentImage) && $currentImage != null)
+            return !is_file($currentImage) && file_exists($this->getFolder() . $currentImage);
     }
 
     public function getFolder()
