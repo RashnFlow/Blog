@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Article;
+use app\models\Category;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -62,7 +65,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $data = Article::getAll();
+
+        $popularArticles = Article::getPopularArticles();
+        $recentArticles = Article::getRecentArticles();
+        $categories = Category::find()->all();
+
+        return $this->render('index', [
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'popularArticles' => $popularArticles,
+            'recentArticles' => $recentArticles,
+            'categories' => $categories
+        ]);
     }
 
     /**

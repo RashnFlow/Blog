@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -65,6 +67,28 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAll($pageSize = 5)
+    {
+        $query = Article::find();
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $articles = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return ['articles' => $articles, 'pagination' => $pagination];
+    }
+
+    public static function getPopularArticles()
+    {
+        return Article::find()->orderBy('viewed desc')->limit(3)->all();
+    }
+
+    public static function getRecentArticles()
+    {
+        return Article::find()->orderBy('date desc')->limit(4)->all();
+    }
+
     public function getImage()
     {
         return ($this->image) ? '/uploads/' . $this->image : '/no-image.png';
@@ -114,6 +138,11 @@ class Article extends \yii\db\ActiveRecord
     {
         $selectedTags = $this->getTags()->select('id')->asArray()->all();
         return ArrayHelper::getColumn($selectedTags, 'id');
+    }
+
+    public function getDate($date)
+    {
+        echo Yii::$app->formatter->asDate($date); //
     }
 
     public function beforeDelete()
