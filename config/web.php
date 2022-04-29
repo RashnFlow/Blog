@@ -49,6 +49,10 @@ $config = [
             'rules' => [
             ],
         ],
+        'assetManager' => [
+            'linkAssets' => true,
+            'appendTimestamp' => true
+        ],
     ],
     'modules' => [
         'admin' => [
