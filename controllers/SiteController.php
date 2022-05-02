@@ -3,8 +3,11 @@
 namespace app\controllers;
 
 use app\models\Article;
+use app\models\ArticleTag;
 use app\models\Category;
+use app\models\Tag;
 use Yii;
+use yii\base\BaseObject;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -147,9 +150,21 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionSingle()
+    public function actionSingle($id)
     {
-        return $this->render('single');
+        $article = Article::findOne($id);
+        $tags = Tag::find()->where(['id' => $article->articleTags->tag_id])->all();
+        $popularArticles = Article::getPopularArticles();
+        $recentArticles = Article::getRecentArticles();
+        $categories = Category::find()->all();
+
+        return $this->render('single', [
+            'article' => $article,
+            'tags' => $tags,
+            'popularArticles' => $popularArticles,
+            'recentArticles' => $recentArticles,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -157,8 +172,18 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionCategory()
+    public function actionCategory($id)
     {
-        return $this->render('category');
+        $data = Category::getArticlesByCategory($id);
+        $popularArticles = Article::getPopularArticles();
+        $recentArticles = Article::getRecentArticles();
+        $categories = Category::find()->all();
+        return $this->render('category', [
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'popularArticles' => $popularArticles,
+            'recentArticles' => $recentArticles,
+            'categories' => $categories
+        ]);
     }
 }
