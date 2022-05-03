@@ -60,7 +60,6 @@ PublicAsset::register($this);
                                 ['class' => 'btn btn-link logout', 'style' => 'padding-top : 10px;']
                             )
                             . \yii\helpers\Html::endForm() ?>
-                            )?>
                         <?php endif; ?>
                     </ul>
                 </div>
