@@ -162,6 +162,12 @@ class Article extends \yii\db\ActiveRecord
         return parent::beforeDelete();
     }
 
+    public function viewedCounter()
+    {
+        $this->viewed += 1;
+        return $this->save(false);
+    }
+
     /**
      * Gets query for [[Category]].
      *
@@ -201,5 +207,15 @@ class Article extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
             ->viaTable('article_tag', ['article_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

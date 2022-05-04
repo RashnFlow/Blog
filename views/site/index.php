@@ -28,9 +28,9 @@
                                 </div>
                             </div>
                             <div class="social-share">
-                                <span class="social-share-title pull-left text-capitalize">By <a href="#">Rubel</a> On <?= $article->getDate($article->date) ?></span>
+                                <span class="social-share-title pull-left text-capitalize">By <?= $article->author->name ?> On <?= $article->getDate($article->date) ?></span>
                                 <ul class="text-center pull-right">
-                                    <li><a class="s-facebook" href="#"><i class="fa fa-eye"></i></a></li><?= (int) $articel->viewed ?>
+                                    <li><a class="s-facebook" href="#"><i class="fa fa-eye"></i></a></li><?= (int) $article->viewed ?>
                                 </ul>
                             </div>
                         </div>
