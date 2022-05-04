@@ -66,7 +66,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new Article.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
@@ -75,7 +75,7 @@ class ArticleController extends Controller
         $model = new Article();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post()) && $model->saveArticle()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -98,7 +98,7 @@ class ArticleController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->saveArticle()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
