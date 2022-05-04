@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Article;
 use app\models\ArticleTag;
 use app\models\Category;
+use app\models\CommentForm;
 use app\models\Tag;
 use Yii;
 use yii\base\BaseObject;
@@ -123,14 +124,33 @@ class SiteController extends Controller
         $popularArticles = Article::getPopularArticles();
         $recentArticles = Article::getRecentArticles();
         $categories = Category::find()->all();
+        $comments = $article->getArticleComments();
+        $commentForm = new CommentForm();
 
         return $this->render('single', [
             'article' => $article,
             'tags' => $tags,
             'popularArticles' => $popularArticles,
             'recentArticles' => $recentArticles,
-            'categories' => $categories
+            'categories' => $categories,
+            'comments' => $comments,
+            'commentForm' => $commentForm
         ]);
+    }
+
+    public function actionComment($id)
+    {
+        $model = new CommentForm();
+
+        if(Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+
+            if($model->saveComment($id)) {
+                Yii::$app->getSession()->setFlash('comment', 'Ваш комментарий будет добавлен после проверки!');
+                return $this->redirect(['site/single', 'id' => $id]);
+            }
+
+        }
     }
 
     /**

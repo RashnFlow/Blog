@@ -94,6 +94,11 @@ class Article extends \yii\db\ActiveRecord
         return ($this->image) ? '/uploads/' . $this->image : '/no-image.png';
     }
 
+    public function getArticleComments()
+    {
+        return $this->getComments()->where(['status' => 1])->all();
+    }
+
     public function saveImage($fileName)
     {
         $this->image = $fileName;

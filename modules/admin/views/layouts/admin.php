@@ -39,6 +39,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Article', 'url' => ['/admin/article/index']],
             ['label' => 'Categories', 'url' => ['/admin/category/index']],
+            ['label' => 'Commentaries', 'url' => ['/admin/comment/index']],
             ['label' => 'Tag', 'url' => ['/admin/tag/index']],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
@@ -76,6 +77,14 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<?php $this->registerJsFile('@webroot/ckeditor/ckeditor.js'); ?>
+<?php $this->registerJsFile('@webroot/ckfinder/ckfinder.js'); ?>
+<script>
+    $(document).ready(function () [
+    var editor = CKEDITOR.replaceAll();
+    CKFinder.setupCKEditor( editor );
+    ])
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>

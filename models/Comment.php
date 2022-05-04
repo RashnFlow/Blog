@@ -18,6 +18,9 @@ use Yii;
  */
 class Comment extends \yii\db\ActiveRecord
 {
+    const STATUS_ALLOW = 1;
+    const STATUS_DISALLOW = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -51,6 +54,28 @@ class Comment extends \yii\db\ActiveRecord
             'article_id' => 'Article ID',
             'status' => 'Status',
         ];
+    }
+
+    public function getDate()
+    {
+        echo Yii::$app->formatter->asDate($this->date); //
+    }
+
+    public function isAllow()
+    {
+        return $this->status;
+    }
+
+    public function allow()
+    {
+        $this->status = self::STATUS_ALLOW;
+        return $this->save();
+    }
+
+    public function disallow()
+    {
+        $this->status = self::STATUS_DISALLOW;
+        return $this->save();
     }
 
     /**
