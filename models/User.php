@@ -102,4 +102,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->save(false);
     }
+
+    public function saveFromVk($uid, $first_name, $photo)
+    {
+        if($user = User::findOne($uid))
+            return Yii::$app->user->login($user);
+
+        $this->id = $uid;
+        $this->name = $first_name;
+        $this->photo = $photo;
+        $this->create();
+
+        return Yii::$app->user->login($this);
+    }
 }
